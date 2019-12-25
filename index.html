@@ -1,0 +1,166 @@
+Skip to content
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@rkoksal 
+1
+00rkoksal/rkoksal.github.io
+ Code Issues 0 Pull requests 0 Actions Projects 0 Security Insights Settings
+rkoksal.github.io/index
+@rkoksal rkoksal Create index
+9e0d565 40 seconds ago
+137 lines (116 sloc)  2.99 KB
+  
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1">
+  <title>"Istanbul"</title>
+  <link href="https://fonts.googleapis.com/css?family=Reenie+Beanie" rel="stylesheet">
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+    
+    #viewDiv {
+      filter: drop-shadow(1px 1px 3px rgba(86, 101, 115 0.3));
+    }
+    #controls {
+      padding: 10px;
+      background-color: rgba(245,255,245, 0.9);
+    }
+    
+    #image {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-image:url('https://i.ibb.co/JjWtZ1X/old-fabric-background-36669-76.png');
+      background-size: cover;
+      opacity: 0.8;
+    }
+    #artist {
+      position: absolute;
+      bottom: 800px;
+      right:  100px;
+      font-family: 'Comic Sans MS', cursive;
+      transform: rotate(-8deg);
+      font-size: 0.6em;
+    }
+  </style>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.13/esri/css/main.css">
+  <script src="https://js.arcgis.com/4.13/"></script>
+
+  <script>
+    require([
+      "esri/WebScene",
+      "esri/views/SceneView",
+      "esri/layers/SceneLayer",
+      "esri/core/watchUtils"
+    ], function(WebScene, SceneView, SceneLayer, watchUtils) {
+      
+      const sketchEdges = {
+        type: "sketch",
+        color: [0, 0, 0, 0.8],
+        size: 2,
+        extensionLength: 10
+      };
+      
+      const renderer = {
+        type: "simple", // autocasts as new SimpleRenderer()
+        symbol: {
+          type: "mesh-3d",
+          symbolLayers: [{
+            type: "fill",
+            material: {
+              color: [255, 255, 255, 0.1],
+              colorMixMode: "replace"
+            },
+            edges: sketchEdges
+            
+            
+          }]
+          
+        }
+      };
+      
+      const sceneLayer = new SceneLayer({
+        portalItem: {
+          id: "a0921645f0e645b6825374754bd2d9b4"
+        },
+        renderer: renderer,
+        popupEnabled: false
+      });
+      
+      const webscene = new WebScene({
+        portalItem: {
+          id: "4d37e227c1834c45bdf70615a5dd0d08"
+      
+    
+        },
+        
+        layers: [sceneLayer]
+      });
+      // define the view
+      const view = new SceneView({
+        container: "viewDiv",
+        map: webscene,
+        
+        alphaCompositingEnabled: true,
+        ui: {
+          components: []
+        }
+      });
+     
+      view.whenLayerView(sceneLayer)
+        .then(function(layerView) {
+          watchUtils.whenFalseOnce(layerView, "updating", function(value) {
+            view.goTo(webscene.presentation.slides.getItemAt(0).viewpoint,
+            {
+            
+              speedFactor: 0.005,
+             
+              easing: "linear"
+            });
+          });
+        });
+      window.view = view;
+    });
+  </script>
+</head>
+
+<body>
+  <div id="image"></div>
+  <div id="viewDiv"></div>
+  <div id="artist">
+    <span>Istanbul ART </span>
+  </div>
+</body>
+
+</html
+  
+  ##rekoksal
+© 2019 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
